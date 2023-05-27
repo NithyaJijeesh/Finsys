@@ -503,9 +503,6 @@ urlpatterns = [
 
     path('edit_payment2/<int:id>',views.edit_payment2,name='edit_payment2'),
 
-    
-
-    
 
     path('delete_payment/<int:id>',views.delete_payment,name='delete_payment'),
 
@@ -527,6 +524,11 @@ urlpatterns = [
     path('update_opening_balance/<int:id>',views.update_opening_balance,name='update_opening_balance'),
 
     path('gstr11',views.gstr11,name='gstr11'),
+
+    path('recurexpenses',views.recurexpenses,name='recurexpenses'),
+
+    path('addrecurexpenses',views.addrecurexpenses,name='addrecurexpenses'),
+
 
 
     
