@@ -26233,10 +26233,6 @@ def gosearch(request):
         cmp1 = company.objects.get(id=request.session["uid"])
         search = request.POST['search']
         cloumn = request.POST['type']
-        
-
-        
-        
 
         if cloumn == '1' or search  == '':
             return redirect('gocustomers')    
@@ -37846,8 +37842,8 @@ def recurexpenses(request):
         else:
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
-        expnc = purchase_expense.objects.filter(cid=cmp1)
-        return render(request,'app1/recurring_expenses.html',{'cmp1': cmp1,'expnc':expnc})
+        rec_expnc = recurring_expense.objects.filter(cid=cmp1)
+        return render(request,'app1/recurring_expenses.html',{'cmp1': cmp1,'rec_expnc':rec_expnc})
     return redirect('/') 
 
 def addrecurexpenses(request):
@@ -37863,7 +37859,9 @@ def addrecurexpenses(request):
         acc1 = accounts1.objects.filter(cid=cmp1,acctype='Other Expenses')
         acc2 = accounts1.objects.filter(cid=cmp1,acctype='Cash')
         acc3 = accounts1.objects.filter(cid=cmp1,acctype='Bank')
-        context = {'cmp1': cmp1, 'vndr': vndr, 'cust': cust,'acc':acc,'acc1':acc1,'acc2':acc2,'acc3':acc3}
+        context = {'cmp1': cmp1, 'vndr': vndr,'cust' : cust,'acc':acc,'acc1':acc1,'acc2':acc2,'acc3':acc3}
+        
+
         return render(request,'app1/addrecurexpense.html',context)
     return redirect('/') 
 
@@ -37875,83 +37873,35 @@ def createrecurexpense(request):
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
         if request.method == 'POST':
-            expense_no= '1000'
-            date = request.POST['date']
-            expenseaccount = request.POST['expenseaccount']
-            etyp = request.POST['expensetype']
-            hsnsac = request.POST['hsn_sac']
-            amount = request.POST['amount']
-            paidthrough = request.POST['paidthrough']
-            vendor = request.POST['vendor']
-            # gsttype = request.POST['gsttype']
-            supply=request.POST['sourceofsupply']
-            # destsupply=request.POST['destinofsupply']
-            customer=request.POST['customer']
-            tax=request.POST['tax']
-            reference=request.POST['reference']
-            note=request.POST['note']
-
-            exp = purchase_expense(date=date,expenseaccount=expenseaccount,expensetype=etyp,hsn_sac=hsnsac,amount=amount,
-                            paidthrough=paidthrough,vendor=vendor, sourceofsupply=supply, 
-                            customer=customer,tax=tax,reference=reference,note=note,cid=cmp1)
-
-            if len(request.FILES) != 0:
-                exp.file=request.FILES['file'] 
-
-            exp.save()
-            exp.expense_no = int(exp.expense_no) + exp.expenseid
-            exp.save()
-
-            paidthrough = request.POST['paidthrough']
-            amount = float(request.POST['amount'])
-            if accounts1.objects.get(name=paidthrough,cid=cmp1):
-                print(paidthrough)
-                acc = accounts1.objects.get(name=paidthrough,cid=cmp1)
-                acc.balance = float(acc.balance + amount)
-                acc.save()
+            profile_name = request.POST.get('prof_name')
+            repeat = request.POST.get('repeat')
+            start_date = request.POST.get('start_date')
+            if request.POST.get('neverExp') == True or request.POST.get('end_date')==None :
+                end_date = datetime.date(9999,12,31)
             else:
-                pass
+                end_date = request.POST.get('end_date')
+            expenseaccount = request.POST.get('exp_acc')
+            etyp = request.POST.get('radioOption')
+            hsnsac = request.POST.get('hsn_sac')
+            amount = request.POST.get('amount')
+            paidthrough = request.POST.get('paidthrough')
+            vendor = request.POST.get('vendor')
+            gsttreat = request.POST.get('gsttype')
+            destsupply=request.POST.get('destinofsupply')
+            customer=request.POST.get('customer')
+            rvschrg = True if request.POST.get('rvsCharge') == "on" else False
+            print(rvschrg)
+            tax=request.POST.get('tax')
+            note=request.POST.get('note')
 
-            expenseaccount = request.POST['expenseaccount']
-            amount = float(request.POST['amount'])
-            try:
-                acc = accounts1.objects.get(name=expenseaccount,cid=cmp1)
-                acc.balance = float(acc.balance + amount)
-                acc.save()
-            except:
-                pass
-            
+            exp = recurring_expense(profile_name = profile_name, repeat_every = repeat,start_date=start_date,end_date = end_date,expenseaccount=expenseaccount,expensetype=etyp,hsn=hsnsac,amount=amount,
+                            paidthrough=paidthrough,vendor=vendor, destinofsupply=destsupply,  gst_treat = gsttreat,
+                            customer=customer,tax=tax,note=note, cid=cmp1, rev_charge = rvschrg)
 
-            pl3=profit_loss()
-            pl3.details = exp.vendor
-            pl3.cid = cmp1
-            pl3.acctype = "Expense"
-            pl3.transactions = "Expense"
-            pl3.accname = exp.expenseaccount
-            pl3.expnc = exp
-            pl3.details0 = exp.paidthrough
-            pl3.details1 = exp.expense_no
-            pl3.details2 = reference
-            pl3.date = exp.date
-            pl3.payments = exp.amount
-            pl3.save()
+            exp.save()
 
-            bs3=balance_sheet()
-            bs3.details = exp.vendor
-            bs3.cid = cmp1
-            bs3.acctype = "Current Asset"
-            bs3.transactions = "Expense"
-            bs3.account = exp.paidthrough
-            bs3.accname = exp.expenseaccount
-            bs3.expnc = exp
-            bs3.details1 = exp.expense_no
-            bs3.details2 = reference
-            bs3.date = exp.date
-            bs3.payments = exp.amount
-            bs3.save()
-
-            return redirect('goexpenses')
-        return render(request,'app1/goexpenses.html',{'cmp1': cmp1})
+            return redirect('recurexpenses')
+        return render(request,'app1/addrecurexpense.html',{'cmp1': cmp1})
     return redirect('/') 
 
 @login_required(login_url='regcomp')
@@ -37962,8 +37912,118 @@ def viewrecurexpense(request,id):
         else:
             return redirect('/')
         cmp1 = company.objects.get(id=request.session['uid'])
-        expnce=purchase_expense.objects.get(expenseid=id)
-        return render(request,'app1/viewexpense.html',{'cmp1': cmp1,'expnce':expnce})
+        expnce=recurring_expense.objects.get(recur_expenseid=id)
+        return render(request,'app1/viewrecurexpense.html',{'cmp1': cmp1,'expnce':expnce})
+    return redirect('/')
+
+@login_required(login_url='regcomp')
+def recur_expense_add_file(request,id):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    ex = recurring_expense.objects.get(recur_expenseid=id)
+
+    if request.method == 'POST':
+        if len(request.FILES) != 0:
+            if ex.file != "default.png":
+                os.remove(ex.file.path)    
+            ex.file=request.FILES['file']
+        ex.save()
+        return redirect('viewrecurexpense',id)
+
+@login_required(login_url='regcomp')
+def editrecurexpense(request,id):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        expnce=recurring_expense.objects.get(expenseid=id)
+        vndr = vendor.objects.filter(cid=cmp1)
+        cust = customer.objects.filter(cid=cmp1)
+        acc = accounts1.objects.filter(cid=cmp1,acctype='Expenses')
+        acc1 = accounts1.objects.filter(cid=cmp1,acctype='Cash')
+        context = {
+                    'cmp1': cmp1,
+                    'vndr':vndr,
+                    'cust':cust,
+                    'expnce':expnce,    
+                    'acc':acc,
+                    'acc1':acc1   
+                }
+        return render(request,'app1/editexpense.html',context)
+    return redirect('/')
+
+def changerecurexpense(request,id):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        if request.method == 'POST':
+            expnce=purchase_expense.objects.get(expenseid=id)
+            expnce.date = request.POST['date']
+            expnce.expenseaccount = request.POST['expenseaccount']
+            expnce.expensetype = request.POST['expensetype']
+            expnce.hsn_sac = request.POST['hsn_sac']
+            expnce.amount = request.POST['amount']
+            expnce.paidthrough = request.POST['paidthrough']
+            expnce.vendor = request.POST['vendor']
+            expnce.sourceofsupply=request.POST['sourceofsupply']
+            expnce.customer=request.POST['customer']
+            expnce.tax=request.POST['tax']
+            expnce.reference=request.POST['reference']
+            expnce.note=request.POST['note']
+
+            if len(request.FILES) != 0:
+                if len(expnce.file) > 0  :
+                    os.remove(expnce.file.path)    
+                expnce.file = request.FILES['file']
+            expnce.save()
+
+            pl3=profit_loss.objects.get(cid=cmp1,expnc=expnce)
+            pl3.details = expnce.vendor
+            pl3.cid = cmp1
+            pl3.acctype = "Expense"
+            pl3.transactions = "Expense"
+            pl3.accname = expnce.expenseaccount
+            pl3.expnc = expnce
+            pl3.details0 = expnce.paidthrough
+            pl3.details1 = expnce.expense_no
+            pl3.details2 = expnce.reference
+            pl3.date = expnce.date
+            pl3.payments = expnce.amount
+            pl3.save()
+
+            bs3=balance_sheet.objects.get(cid=cmp1,expnc=expnce)
+            bs3.details = expnce.vendor
+            bs3.cid = cmp1
+            bs3.acctype = "Current Asset"
+            bs3.transactions = "Expense"
+            bs3.account = expnce.paidthrough
+            bs3.accname = expnce.expenseaccount
+            bs3.expnc = expnce
+            bs3.details1 = expnce.expense_no
+            bs3.details2 = expnce.reference
+            bs3.date = expnce.date
+            bs3.payments = expnce.amount
+            bs3.save()
+
+            return redirect('recurexpenses')
+        return render(request,'app1/recurring_expenses.html',{'cmp1': cmp1})
+    return redirect('/') 
+
+@login_required(login_url='regcomp')
+def deleterecurexpense(request, id):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        expnce=recurring_expense.objects.get(recur_expenseid=id)
+        expnce.delete() 
+        return redirect('recurexpenses')
     return redirect('/')
 
 

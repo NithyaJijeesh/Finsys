@@ -529,9 +529,18 @@ urlpatterns = [
 
     path('addrecurexpenses',views.addrecurexpenses,name='addrecurexpenses'),
 
+    path('createrecurexpense',views.createrecurexpense,name='createrecurexpense'),
 
-
+    path('viewrecurexpense/<id>',views.viewrecurexpense,name='viewrecurexpense'),
     
+    path('editrecurexpense/<id>',views.editrecurexpense,name='editrecurexpense'),
+
+    path('changerecurexpense/<id>',views.changerecurexpense,name='changerecurexpense'),
+
+    path('deleterecurexpense/<id>',views.deleterecurexpense,name='deleterecurexpense'),
+
+    path('recur_expense_add_file/<id>',views.recur_expense_add_file,name='recur_expense_add_file'),
+
     
 
     

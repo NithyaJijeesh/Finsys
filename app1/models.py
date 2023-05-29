@@ -1697,6 +1697,33 @@ class RetainerInvoiceItems(models.Model):
     amount = models.FloatField(max_length=100,null=True)
 
 
+#-------Nithya------
+#----------Recurring Expenses-----------
+
+
+class recurring_expense(models.Model):
+    cid = models.ForeignKey(company, on_delete=models.CASCADE,null=True)
+    recur_expenseid = models.AutoField(('eid'), primary_key=True,blank=True)
+    profile_name = models.CharField(max_length=100,null=True,blank=True)
+    repeat_every = models.CharField(max_length=100,null=True,blank=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True,blank=True)
+    expenseaccount = models.CharField(max_length=100,null=True,blank=True)
+    expensetype = models.CharField(max_length=100,null=True,blank=True)
+    hsn = models.CharField(max_length=100,null=True,blank=True)
+    amount = models.IntegerField(null=True,blank=True)
+    paidthrough = models.CharField(max_length=100,null=True,blank=True)
+    vendor = models.CharField(max_length=100,null=True,blank=True)
+    gst_treat = models.CharField(max_length=100,null=True,blank=True)
+    destinofsupply = models.CharField(max_length=100,null=True,blank=True)
+    customer = models.CharField(max_length=100,null=True,blank=True)
+    rev_charge = models.CharField(max_length=50,null=True,blank=True)
+    tax = models.CharField(max_length=100,null=True,blank=True)
+    note = models.CharField(max_length=255,null=True,blank=True)
+    file = models.FileField(upload_to='purchase/recurring_expense',default="default.png")
+
+
+
 
     
 
