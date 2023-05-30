@@ -211,6 +211,7 @@
                         <div class="col-md-3 mt-4">
                             <label for="">Tax</label>
                             <select name="tax" id="tax1" class="form-control">
+                                <option id="ta1" value=0 text={{ cmp1.state }} disabled> Choose</option>
                                 <option value=28 text={{ cmp1.state }}>28.0% GST(28%)</option>
                                 <option value=18 text={{ cmp1.state }}>18.0% GST(18%)</option>
                                 <option value=12 text={{ cmp1.state }}>12.0% GST(12%)</option>
@@ -221,7 +222,7 @@
                                 <option value=0 text={{ cmp1.state }}>0.0% GST(0%)</option>
                                 <option value=0 text={{ cmp1.state }}>Exempt GST(0%)</option>
                                 <option value=0 text={{ cmp1.state }}>Out of Scope(0%)</option>
-                                <option id="ta5" value=0 text=" ">Choose</option>
+                                <option id="ta5" value=0 text=" " disabled>Choose</option>
                                 <option value=28 text=" ">28.0% IGST(28%)</option>
                                 <option value=18 text=" ">18.0% IGST(18%)</option>
                                 <option value=12 text=" ">12.0% IGST(12%)</option>
@@ -231,7 +232,7 @@
                                 <option value=.25 text=" ">0.25% IGST(0.25%)</option>
                                 <option value=0 text=" ">0.0% IGST(0%)</option>
                                 <option value=0 text=" ">Exempt IGST(0%)</option>
-                                <option value=0 text=" " selected="selected">Out of Scope(0%)</option>
+                                <option value=0 text=" ">Out of Scope(0%)</option>
                           </select>
                           <label for="" id="rvsLabel"  class="d-none" style="color: #909091;">Reverse Charge</label>
                         </div>
