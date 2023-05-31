@@ -525,44 +525,7 @@ urlpatterns = [
 
     path('gstr11',views.gstr11,name='gstr11'),
 
-    path('recurexpenses',views.recurexpenses,name='recurexpenses'),
-
-    path('addrecurexpenses',views.addrecurexpenses,name='addrecurexpenses'),
-
-    path('createrecurexpense',views.createrecurexpense,name='createrecurexpense'),
-
-    path('viewrecurexpense/<id>',views.viewrecurexpense,name='viewrecurexpense'),
-    
-    path('editrecurexpense/<id>',views.editrecurexpense,name='editrecurexpense'),
-
-    path('changerecurexpense/<id>',views.changerecurexpense,name='changerecurexpense'),
-
-    path('deleterecurexpense/<id>',views.deleterecurexpense,name='deleterecurexpense'),
-
-    path('recur_expense_add_file/<id>',views.recur_expense_add_file,name='recur_expense_add_file'),
-
-    
-
-    
-
-
-   
-    
-
-
-    
-
-
-    
-
-
-    
-
-
-    
-    
-
-    # path('pdf',views.pdf,name='pdf'),
+ # path('pdf',views.pdf,name='pdf'),
 
 
 
@@ -881,7 +844,31 @@ path('search_retinvoice',views.search_retinvoice,name='search_retinvoice'),
 
 
 
+    # ---------------Nithya---------------recurring expenses-----------------
 
+    path('recurexpenses',views.recurexpenses,name='recurexpenses'),
 
+    path('addrecurexpenses',views.addrecurexpenses,name='addrecurexpenses'),
+
+    path('createrecurexpense',views.createrecurexpense,name='createrecurexpense'),
+
+    path('viewrecurexpense/<id>',views.viewrecurexpense,name='viewrecurexpense'),
     
+    path('editrecurexpense/<id>',views.editrecurexpense,name='editrecurexpense'),
+
+    path('changerecurexpense/<id>',views.changerecurexpense,name='changerecurexpense'),
+
+    path('deleterecurexpense/<id>',views.deleterecurexpense,name='deleterecurexpense'),
+
+    path('recur_expense_add_file/<id>',views.recur_expense_add_file,name='recur_expense_add_file'),
+
+    path('expence_goods',views.expence_goods,name='expence_goods'),
+
+    path('expence_services',views.expence_services,name='expence_services'),
+
+    path('createvendor5',views.createvendor5,name='createvendor5'),
+
+     path('get_GST',views.get_GST,name='get_GST'),
+
+
 ]

@@ -75,9 +75,9 @@
                             role="button">Filter By
                         </a>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{% url 'govendor' %}">All</a>
-                            <a class="dropdown-item" href="{% url 'vendor_active' %}">Active</a>
-                            <a class="dropdown-item" href="{% url 'vendor_inactive' %}">Inactive</a>
+                            <a class="dropdown-item" href="{% url 'recurexpenses' %}">All</a>
+                            <a class="dropdown-item" href="{% url 'expence_goods' %}">Goods</a>
+                            <a class="dropdown-item" href="{% url 'expence_services' %}">Services</a>
                         </div>
                         <a href="{% url 'addrecurexpenses' %}" class="btn btn-outline-info btn-light text-light fa fa-plus" role="button">&nbsp;New</a>   
                     </div>
@@ -140,7 +140,7 @@
             var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
             return dl ?
                 XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }):
-                XLSX.writeFile(wb, fn || ('Customers.' + (type || 'xlsx')));
+                XLSX.writeFile(wb, fn || ('Recurring Expenses.' + (type || 'xlsx')));
             }
         </script>
 

@@ -1343,7 +1343,7 @@ class vendor(models.Model):
     currency = models.CharField(max_length=100, null=True)
     openingbalance = models.CharField(max_length=100, null=True)
     opblnc_due = models.CharField(max_length=100, null=True)
-    date = models.DateField(null=True)
+    date = models.DateField(null=True,blank= True)
     paymentterms = models.CharField(max_length=100, null=True)
     street = models.CharField(max_length=100,null=True)
     city = models.CharField(max_length=100,null=True)
@@ -1715,6 +1715,8 @@ class recurring_expense(models.Model):
     paidthrough = models.CharField(max_length=100,null=True,blank=True)
     vendor = models.CharField(max_length=100,null=True,blank=True)
     gst_treat = models.CharField(max_length=100,null=True,blank=True)
+    gstin = models.CharField(max_length=100,null=True,blank=True)
+
     destinofsupply = models.CharField(max_length=100,null=True,blank=True)
     customer = models.CharField(max_length=100,null=True,blank=True)
     rev_charge = models.CharField(max_length=50,null=True,blank=True)
