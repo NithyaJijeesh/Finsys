@@ -32391,53 +32391,6 @@ def createvendor4(request):
         return render(request,'app1/addpurchasedebit.html',{'cmp1': cmp1})
     return redirect('/')
 
-
-@login_required(login_url='regcomp')
-def createvendor5(request):
-    if 'uid' in request.session:
-        if request.session.has_key('uid'):
-            uid = request.session['uid']
-        else:
-            return redirect('/')
-        cmp1 = company.objects.get(id=request.session['uid'])
-        if request.method=='POST':
-            title=request.POST['title']
-            first_name=request.POST['firstname']
-            last_name=request.POST['lastname']
-            cmpnm=request.POST['company_name']
-            email=request.POST['email']
-            website=request.POST['website']
-            mobile=request.POST['mobile']
-            gsttype=request.POST['gsttype']
-            gstin=request.POST['gstin']
-            panno=request.POST['panno']
-            supply=request.POST['sourceofsupply']
-            currency=request.POST['currency']
-            balance=request.POST['openingbalance']
-            due=request.POST['openingbalance']
-            # date=request.POST['date']
-            payment=request.POST['paymentterms']
-            street=request.POST['street']
-            city=request.POST['city']
-            state=request.POST['state']
-            pincode=request.POST['pincode']
-            country=request.POST['country']
-            shipstreet=request.POST['shipstreet']
-            shipcity=request.POST['shipcity']
-            shipstate=request.POST['shipstate']
-            shippincode=request.POST['shippincode']
-            shipcountry=request.POST['shipcountry']
-            
-            vndr = vendor(title=title, firstname=first_name, lastname=last_name, companyname= cmpnm, gsttype=gsttype, gstin=gstin, 
-                        panno=panno, email=email,sourceofsupply=supply,currency=currency, website=website, mobile=mobile, 
-                        openingbalance=balance,opblnc_due=due, street=street, city=city, state=state, paymentterms=payment,
-                        pincode=pincode, country=country, shipstreet=shipstreet, shipcity=shipcity, shipstate=shipstate,
-                        shippincode=shippincode, shipcountry=shipcountry,cid=cmp1)
-            vndr.save()
-            return redirect('addrecurexpenses')
-        return render(request,'app1/addrecurexpense.html',{'cmp1': cmp1})
-    return redirect('/')
-
 @login_required(login_url='regcomp')
 def createcustomer1(request):
     if 'uid' in request.session:
@@ -32606,6 +32559,9 @@ def createcustomer3(request):
         customers = customer.objects.filter(cid=cmp1).all()
         context = {'customers': customers, 'cmp1': cmp1}
     return render(request, 'app1/addpurchaseorder.html', context)
+
+
+
 
 def create_item1(request):
     if 'uid' in request.session:
@@ -34914,6 +34870,7 @@ def createaccount2(request):
             return redirect('addexpenses')
         return render(request,'app1/addexpense.html',{'cmp1':cmp1})
     return redirect('/')
+
 
 def gopurchasedebit(request):
     if 'uid' in request.session:
@@ -37894,6 +37851,51 @@ def recurexpenses(request):
     return redirect('/') 
 
 @login_required(login_url='regcomp')
+def expence_custasc(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    rec_expnc =recurring_expense.objects.filter(cid=cmp1).order_by('customer')
+
+    context = {
+            'rec_expnc':rec_expnc,
+            'cmp1': cmp1
+            }
+    return render(request,'app1/recurring_expenses.html',context)
+
+@login_required(login_url='regcomp')
+def expence_custdesc(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    rec_expnc =recurring_expense.objects.filter(cid=cmp1).order_by('-customer')
+
+    context = {
+            'rec_expnc':rec_expnc,
+            'cmp1': cmp1
+            }
+    return render(request,'app1/recurring_expenses.html',context)
+
+@login_required(login_url='regcomp')
+def expence_vendorasc(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    rec_expnc =recurring_expense.objects.filter(cid=cmp1).order_by('vendor')
+
+    context = {
+            'rec_expnc':rec_expnc,
+            'cmp1': cmp1
+            }
+    return render(request,'app1/recurring_expenses.html',context)
+
+@login_required(login_url='regcomp')
+def expence_vendordesc(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    rec_expnc =recurring_expense.objects.filter(cid=cmp1).order_by('-vendor')
+
+    context = {
+            'rec_expnc':rec_expnc,
+            'cmp1': cmp1
+            }
+    return render(request,'app1/recurring_expenses.html',context)
+
+
+@login_required(login_url='regcomp')
 def expence_goods(request):
     cmp1 = company.objects.get(id=request.session["uid"])
     rec_expnc =recurring_expense.objects.filter(cid=cmp1,expensetype='Goods').all()
@@ -37954,6 +37956,7 @@ def createrecurexpense(request):
             amount = request.POST.get('amount')
             paidthrough = request.POST.get('paidthrough')
             vendor = request.POST.get('vendor')
+            gst = request.POST.get('gstnum')
             gsttreat = request.POST.get('gsttype')
             destsupply=request.POST.get('destinofsupply')
             customer=request.POST.get('customer')
@@ -37963,7 +37966,7 @@ def createrecurexpense(request):
 
             exp = recurring_expense(profile_name = profile_name, repeat_every = repeat,start_date=start_date,end_date = end_date,expenseaccount=expenseaccount,expensetype=etyp,hsn=hsnsac,amount=amount,
                             paidthrough=paidthrough,vendor=vendor, destinofsupply=destsupply,  gst_treat = gsttreat,
-                            customer=customer,tax=tax,note=note, cid=cmp1, rev_charge = rvschrg)
+                            customer=customer,tax=tax,note=note, cid=cmp1, rev_charge = rvschrg, gstin = gst)
 
             exp.save()
 
@@ -38044,6 +38047,7 @@ def changerecurexpense(request,id):
             expnce.paidthrough = request.POST.get('paidthrough')
             expnce.vendor = request.POST.get('vendor1')
             expnce.destinofsupply=request.POST.get('destiofsupply')
+            expnce.gstin= request.POST.get('gstnum')
             expnce.gst_treat = request.POST.get('gsttype')
             expnce.customer=request.POST.get('customer')
             expnce.rev_charge = True if request.POST.get('rvsCharge') == "on" else False
@@ -38079,17 +38083,151 @@ def get_GST(request):
 
         cmp1 = company.objects.get(id=request.session['uid'])
 
-        id = request.POST.get('id')
-        print(id)
-        vdr = vendor.objects.get(cid=cmp1,vendorid = id)
-        print(vdr)
+        name = request.POST.get('name').split()
+        vdr = vendor.objects.get(cid=cmp1,firstname = name[0],lastname = name[1])
         data1 = vdr.gstin
-        print(data1)
         data2 = vdr.gsttype
     
-        return JsonResponse({'data1':data1, 'data2':data2},safe=False)
+        return JsonResponse({'data1' :data1, 'data2' : data2},safe=False)
 
 
+
+@login_required(login_url='regcomp')
+def recurexpense_vendor(request):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+
+        if request.method=='POST':
+
+            title=request.POST['title']
+            print(title)
+            first_name=request.POST['firstname']
+            last_name=request.POST['lastname']
+            cmpnm=request.POST['company_name']
+            email=request.POST['email']
+            website=request.POST['website']
+            mobile=request.POST['mobile']
+            gsttype=request.POST['gsttype']
+            gstin=request.POST['gstin']
+            panno=request.POST['panno']
+            supply=request.POST['sourceofsupply']
+            currency=request.POST['currency']
+            balance=request.POST['openingbalance']
+            due=request.POST['openingbalance']
+            # date=request.POST['date']
+            payment=request.POST['paymentterms']
+            street=request.POST['street']
+            city=request.POST['city']
+            state=request.POST['state']
+            pincode=request.POST['pincode']
+            country=request.POST['country']
+            shipstreet=request.POST['shipstreet']
+            shipcity=request.POST['shipcity']
+            shipstate=request.POST['shipstate']
+            shippincode=request.POST['shippincode']
+            shipcountry=request.POST['shipcountry']
+            
+            vndr = vendor(title=title, firstname=first_name, lastname=last_name, companyname= cmpnm, gsttype=gsttype, gstin=gstin, 
+                        panno=panno, email=email,sourceofsupply=supply,currency=currency, website=website, mobile=mobile, 
+                        openingbalance=balance,opblnc_due=due, street=street, city=city, state=state, paymentterms=payment,
+                        pincode=pincode, country=country, shipstreet=shipstreet, shipcity=shipcity, shipstate=shipstate,
+                        shippincode=shippincode, shipcountry=shipcountry,cid=cmp1)
+            vndr.save()
+    
+            return HttpResponse({"message": "success"})
+
+
+@login_required(login_url='regcomp')
+def recurexpense_account(request):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        if request.method=='POST':
+            acctype = request.POST['acctype']
+            print(acctype)
+            name = request.POST['name']
+            des = request.POST['description']                           
+            balance = request.POST.get('balance')
+            if balance == "":
+                balance=0.0
+            asof = request.POST['asof']
+            dbbalance = request.POST['dbbalance']
+            if dbbalance == "":
+                dbbalance = 0.0
+            account = accounts1(acctype=acctype, name=name, description=des, balance=balance, asof=asof, cid=cmp1,dbbalance=dbbalance)
+            account.save()
+
+
+            return HttpResponse({"message": "success"})
+
+
+@login_required(login_url='regcomp')
+def recurexpense_customer(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    if request.method == "POST":
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        if customer.objects.filter(firstname=firstname, lastname=lastname, cid=cmp1).exists():
+            messages.info(request,
+                f"Customer {firstname} {lastname} already exists. Please provide a different name.")
+            return redirect('gocustomers')
+        else:
+            toda = date.today()
+            tod = toda.strftime("%Y-%m-%d")
+            customer1 = customer(   
+                                    title=request.POST.get('title'), 
+                                    firstname=request.POST.get('firstname'),
+                                    lastname=request.POST.get('lastname'), 
+                                    company=request.POST.get('company'),
+                                    location=request.POST.get('location'),
+                                    gsttype=request.POST.get('gsttype'),
+                                    gstin=request.POST.get('gstin') , 
+                                    panno=request.POST.get('panno') ,
+                                    email=request.POST.get('email'),
+                                    website=request.POST.get('website'), 
+                                    mobile=request.POST.get('mobile'),
+                                    street=request.POST.get('street') , 
+                                    city=request.POST.get('city'),
+                                    state=request.POST.get('state'),
+                                    pincode=request.POST.get('pincode'), 
+                                    country=request.POST.get('country'),
+                                    shipstreet=request.POST.get('shipstreet'), 
+                                    shipcity=request.POST.get('shipcity'),
+                                    shipstate=request.POST.get('shipstate'),
+                                    shippincode=request.POST.get('shippincode'), 
+                                    shipcountry=request.POST.get('shipcountry'),
+                                    cid=cmp1,
+
+                        )
+
+            customer1.save()
+               
+            temp=request.POST['openbalance']
+            if temp != "":
+                customer1.opening_balance = request.POST['openbalance'] 
+                customer1.opening_balance_due = request.POST['openbalance'] 
+                customer1.date= tod
+                customer1.save()
+
+            if customer1.opening_balance != "":
+                add_cust_stat=cust_statment(
+                customer = customer1.firstname +" "+ customer1.lastname,
+                cid  = cmp1,
+                Date = tod,
+                Transactions="Customer Opening Balance",
+                Amount= customer1.opening_balance,
+            )
+            add_cust_stat.save()
+
+        
+            return HttpResponse({"message": "success"})        
 
 
 

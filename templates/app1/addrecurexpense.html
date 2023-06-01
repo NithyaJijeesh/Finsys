@@ -98,7 +98,7 @@
                        </div>
                        <div class="col-md-4 mt-3">
                            <label for="" id="hsnlbl">HSN Code</label>
-                           <input type="text" name="hsn_sac" class="form-control" id="hsn">
+                           <input type="text" name="hsn_sac" class="form-control" id="hsn" pattern="[0-9]{6}" placeholder="123456">
                        </div> 
                        
                         
@@ -182,8 +182,9 @@
                             <label for="">Vendor</label>
                             <div class="d-flex">
                                 <select name="vendor" id="vendor" class="form-control" >
+                                    <option value=""></option>
                                     {% for v in vndr %}
-                                    <option value="{{ v.vendorid }}">{{ v.firstname }} {{ v.lastname }}</option>
+                                    <option value="{{ v.firstname }} {{ v.lastname }}">{{ v.firstname }} {{ v.lastname }}</option>
                                     {% endfor %}
                                 </select>
                                 <a class="btn btn-outline-secondary ml-1" role="button" data-target="#newvendor" data-toggle="modal">+</a>
@@ -312,7 +313,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="card p-3 m-3">
-                                    <form method="post" action="{% url 'createaccount2' %}">
+                                    <form method="post" action="">
                                         {% csrf_token %}
                                         <div class="row mt-2 mb-2">
                                             <div class="col-md-6">
@@ -339,7 +340,7 @@
                                             </div>
                                             <div class="col-md-6 mt-2">
                                                 <label for="balance">Debit</label>
-                                                <input type="number" name="dbbalance" id="balance" placeholder="Debit Amount"
+                                                <input type="number" name="dbbalance" id="dbbalance" placeholder="Debit Amount"
                                                        class="form-control">
                                             </div>
                                         </div>
@@ -357,7 +358,7 @@
                                                 </div>
                                                 <div class="mt-2">
                                                     <label>Description</label>
-                                                <textarea class="form-control" name="description" placeholder="Max. 500 Characters"></textarea>
+                                                <textarea class="form-control" id="description" name="description" placeholder="Max. 500 Characters"></textarea>
                                                 </div>
                                             </div>
                                         </div>        
@@ -366,7 +367,7 @@
                                                 <div class="col-md-5"></div>
                                                 <div class="col-md-4"></div>
                                                 <div class="col-md-3">
-                                                    <button type="submit" class="btn btn-outline-info">Save and
+                                                    <button type="submit" class="btn btn-outline-info" data-dismiss="modal" id="accountSave">Save and
                                                         close
                                                     </button>
                                                 </div>
@@ -390,7 +391,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="card p-3 m-3">
-                                    <form action="createvendor5" method="post" class="needs-validation" novalidate autocomplete="off">
+                                    <form action="" method="post" class="needs-validation" novalidate autocomplete="off" id="modalForm">
                                         {% csrf_token %}
                                         {% if user.is_authenticated %}
                                             <div class="row">
@@ -404,35 +405,35 @@
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3 mt-2">
-                                                    <label for="validationCustom02">First name</label>
-                                                    <input type="text" class="form-control" id="validationCustom02" name="firstname"
+                                                    <label for="fname">First name</label>
+                                                    <input type="text" class="form-control" id="fname" name="firstname"
                                                            required>
                                                     <div class="valid-feedback">Looks good!</div>
                                                 </div>
                                                 <div class="col-md-3 mt-2">
-                                                    <label for="validationCustom02">Last name</label>
-                                                    <input type="text" class="form-control" id="validationCustom02" name="lastname">
+                                                    <label for="lname">Last name</label>
+                                                    <input type="text" class="form-control" id="lname" name="lastname">
                                                 </div>
                                                 <div class="col-md-3 mt-2">
-                                                    <label for="validationCustom03">Company</label>
-                                                    <input type="text" class="form-control" id="validationCustom03" name="company_name">
+                                                    <label for="company">Company</label>
+                                                    <input type="text" class="form-control" id="company" name="company_name">
                                                 </div>
                                             </div>
                                             
                                             <div class="row">
                                                 <div class="col-md-4 mt-3">
-                                                    <label for="validationCustom03">Email</label>
-                                                    <input type="email" class="form-control" id="validationCustom03" name="email"
+                                                    <label for="email">Email</label>
+                                                    <input type="email" class="form-control" id="email" name="email"
                                                         placeholder="finsys@mail.com">
                                                 </div>
                                                 <div class="col-md-4 mt-3">
-                                                    <label for="validationCustom03">Website</label>
-                                                    <input type="text" class="form-control" id="validationCustom03"
+                                                    <label for="wsite">Website</label>
+                                                    <input type="text" class="form-control" id="wsite"
                                                         placeholder="www.finsys.com" name="website">
                                                 </div>
                                                 <div class="col-md-4 mt-3">
-                                                    <label for="validationCustom01">Mobile</label>
-                                                    <input type="text" class="form-control" id="validationCustom01"
+                                                    <label for="mobile">Mobile</label>
+                                                    <input type="text" class="form-control" id="mobile"
                                                         placeholder="Mobile number" maxlength="10"
                                                         name="mobile">
                                                 </div>
@@ -458,9 +459,9 @@
                                                 </div>
                                                 <div class="col-md-4 mt-3">
                                                     <div id="hello">
-                                                        <label for="validationCustom05">GSTIN</label>
+                                                        <label for="gstin">GSTIN</label>
                                                         <input type="text" class="form-control" onchange="checkgst(this)"
-                                                            id="validationCustom05" name="gstin"
+                                                            id="gstin" name="gstin"
                                                             placeholder="29APPCK7465F1Z1">
                                                         <a href="https://services.gst.gov.in/services/searchtp"
                                                             target="_blank" style="color:#3dd5f3">Get Taxpayer details ?</a>
@@ -469,14 +470,14 @@
                                                 </div>
                                                 <div class="col-md-4 mt-3">
                                                     <label for="validationCustom03">PAN NO</label>
-                                                    <input type="text" class="form-control" id="" name="panno"
+                                                    <input type="text" class="form-control" id="panno" name="panno"
                                                     placeholder="APPCK7465F">
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-3 mt-2">
                                                    <label for="">Place of Supply</label>
-                                                    <select class="form-control" id="" name="sourceofsupply">
+                                                    <select class="form-control" id="ssupply" name="sourceofsupply">
                                                         <option value="Nill"></option>
                                                         <option value="[AN] Andaman and Nicobar Islads">[AN] Andaman and Nicobar Islads</option>
                                                         <option value="[AD] Andhra Predhesh">[AD] Andhra Predhesh</option>
@@ -522,7 +523,7 @@
                                                 <div class="col-md-3 mt-2">
                                                     <label for="">Currency</label>
                                                     <div class="d-flex">
-                                                        <input type="text" class="form-control" id="" name="currency" placeholder="INR - Indian Rupee"
+                                                        <input type="text" class="form-control" id="currency" name="currency" placeholder="INR - Indian Rupee"
                                                             id="">
                                                         <a href="#">
                                                             <button type="button" class="btn btn-outline-secondary ml-1">+</button>
@@ -534,13 +535,13 @@
                                                    <label for="">Opening Balance</label>
                                                    <div class="d-flex">
                                                     <p class="form-control" style="width: 60px;">INR</p>
-                                                    <input type="number" class="form-control" name="openingbalance" placeholder="INR">
+                                                    <input type="number" class="form-control" name="openingbalance" placeholder="INR" id="openingbalance">
                                                    </div>
                                                 </div>
                                                 <div class="col-md-3 mt-2">
                                                    <label for="">Payment Terms</label>
                                                    <div class="d-flex">
-                                                    <select class="form-control" name="paymentterms">
+                                                    <select class="form-control" name="paymentterms" id="paymentterms">
                                                         <option selected id="trmopt"></option>
                                                         <option value="0">Due on Receipt</option>
                                                         <option value="15">NET 15</option>
@@ -638,7 +639,7 @@
                                                         <div class="col-md-6 mt-3">
                                                             <div class="form-row">
                                                                 <label for="pinco">Pin Code</label>
-                                                                <input type="text" class="form-control" id="pinco"
+                                                                <input type="text" class="form-control" id="pincode"
                                                                     name="pincode" maxlength="6"
                                                                     placeholder="PIN Code">
                                                             </div>
@@ -733,7 +734,7 @@
                                                         <div class="col-md-6 mt-3">
                                                             <div class="form-row">
                                                                 <label for="shippinco">Pin Code</label>
-                                                                <input type="text" class="form-control" id="shippinco"
+                                                                <input type="text" class="form-control" id="shippincode"
                                                                     name="shippincode"
                                                                     placeholder="PIN Code">
                                                             </div>
@@ -762,7 +763,7 @@
                                                 <div class="col-md-4"></div>
                                                 <div class="col-md-4">
                                                     <button class="btn btn-outline-info rounded-pill text-grey w-100 mt-3 mb-3"
-                                                            type="submit">
+                                                            type="submit" data-dismiss="modal" id="vendorSave">
                                                         Submit form
                                                     </button>
                                                 </div>
@@ -776,34 +777,7 @@
                     </div>  
                 </div>  
 
-                <div class="modal fade" id="crperiod">
-                    <div class="modal-dialog">
-                        <div class="modal-content" style="background-color: #213b52;">
-                            <div class="modal-header">
-                                <h5 class="m-3">New Payment Terms</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="card p-3 m-3">
-                                    <form action="{% url 'credit_period3' %}" method="post" autocomplete="off">
-                                        {% csrf_token %}
-                                        <div class="row">
-                                            <div class="col-md-2 mt-2"></div>
-                                            <div class="col-md-5 mt-2">
-                                                <input type="number" name="newperiod" class="form-control">
-                                            </div>
-                                            <div class="col-md-2 mt-2">
-                                                <button class="btn btn-outline-info text-grey mb-3" type="submit">Save</button>
-                                            </div>
-                                        </div>
-                                    </form>  
-                                </div>
-                            </div>
-                        </div>   
-                    </div>
-                </div> 
+                
 
                 <div class="modal fade" id="newcustomer">
                     <div class="modal-dialog modal-xl">
@@ -816,11 +790,11 @@
                             </div>
                             <div class="modal-body">
                                 <div class="card p-3 m-3">
-                                    <form action="createcustomer3" method="POST">{% csrf_token %}
+                                    <form action="" method="POST">{% csrf_token %}
                                         <div class="row">
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom01">Title</label>
-                                                <select name="title" id="title" class="form-control" id="validationCustom01">
+                                                <label for="title1">Title</label>
+                                                <select name="title" id="title1" class="form-control">
                                                     <option value="Mr">Mr</option>
                                                     <option value="Mrs">Mrs</option>
                                                     <option value="Miss">Miss</option>
@@ -828,32 +802,32 @@
                                                 </select>
                                             </div>
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom02">First name</label>
-                                                <input type="text" class="form-control" id="validationCustom02" name="firstname" required>   
+                                                <label for="fname">First name</label>
+                                                <input type="text" class="form-control" id="firstname" name="firstname" required >   
                                             </div>
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom02">Last name</label>
-                                                <input type="text" class="form-control" id="validationCustom02" name="lastname">    
+                                                <label for="lname">Last name</label>
+                                                <input type="text" class="form-control" id="lastname" name="lastname">    
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom03">Company</label>
-                                                <input type="text" class="form-control" name="company">
+                                                <label for="company">Company</label>
+                                                <input type="text" class="form-control" name="company1" id="company1"> 
                                             </div>
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom03">Location</label>
-                                                <input type="text" class="form-control" id="validationCustom03" name="location">
+                                                <label for="location">Location</label>
+                                                <input type="text" class="form-control" id="location" name="location">
                                             </div>
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom05">Opening Balance</label>
-                                                <input type="text" class="form-control" value=""  name="openbalance">
+                                                <label for="openingbalance">Opening Balance</label>
+                                                <input type="text" class="form-control" value=""  name="openbalance" id="openbalance">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 mt-3">
                                                 <label for="validationCustom04">GST type</label>
-                                                <select class="form-control" id="gsttyp" name="gsttype"
+                                                <select class="form-control" id="gsttp" name="gsttype"
                                                         onclick="hidinput1('hello1', this)" required>
                                                         <option selected disabled value="">Choose..</option>
                                                         <option value="Registered Business - Regular">Registered Business - Regular</option>
@@ -869,9 +843,9 @@
                                             </div>
                                             <div class="col-md-4 mt-3">
                                                 <div id="hello1">
-                                                    <label for="validationCustom05">GSTIN</label>
+                                                    <label for="gst">GSTIN</label>
                                                     <input type="text" class="form-control" onchange="checkgst1(this)"
-                                                        id="validationCustom05" name="gstin"
+                                                        id="gst" name="gstin"
                                                         placeholder="29APPCK7465F1Z1">
                                                     <a href="https://services.gst.gov.in/services/searchtp"
                                                         target="_blank" style="color:#3dd5f3">Get Taxpayer details ?</a>
@@ -879,28 +853,28 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom03">PAN NO</label>
-                                                <input type="text" class="form-control" id="validationCustom03" name="panno"
+                                                <label for="pannum">PAN NO</label>
+                                                <input type="text" class="form-control" id="pannum" name="panno" 
                                                        onchange="checkpan(this)" placeholder="APPCK7465F">
                                                 <div class="text-danger m-2" id="warnpan"></div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom03">Email</label>
-                                                <input type="email" class="form-control" id="validationCustom03" name="email"
+                                                <label for="custemail">Email</label>
+                                                <input type="email" class="form-control" id="custemail" name="email"
                                                     placeholder="finsys@mail.com">
                                                 <div class="invalid-feedback">Please provide a valid Email</div>
                                             </div>
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom03">Website</label>
-                                                <input type="text" class="form-control" id="validationCustom03"
+                                                <label for="web">Website</label>
+                                                <input type="text" class="form-control" id="web"
                                                        placeholder="www.finsys.com" onchange="checkweb(this)" name="website">
                                                 <div id="warnweb" class="text-danger"></div>
                                             </div>
                                             <div class="col-md-4 mt-3">
-                                                <label for="validationCustom01">Mobile</label>
-                                                <input type="text" class="form-control" id="validationCustom01"
+                                                <label for="mob">Mobile</label>
+                                                <input type="text" class="form-control" id="mob"
                                                        onchange="checkphone(this)" name="mobile">
                                                 <div class="text-danger m-2" id="warnphone"></div>
                                             </div>
@@ -983,7 +957,7 @@
                                                     <div class="col-md-6 mt-3">
                                                         <div class="form-row">
                                                             <label for="pinco">Pin Code</label>
-                                                            <input type="text" class="form-control" id="pinco1"
+                                                            <input type="text" class="form-control" id="pincode1"
                                                                    name="pincode"
                                                                    placeholder="PIN code">
                                                             <div class="invalid-feedback">Please provide a valid Pin Code</div>
@@ -1031,7 +1005,7 @@
                                                     <div class="col-md-6 mt-3">
                                                         <div class="form-row">
                                                             <label for="shipstate">State</label>
-                                                            <select type="text" class="form-control" id="plosu" name="shipstate">
+                                                            <select type="text" class="form-control" id="plosu1" name="shipstate">
                                                                 <option id="shipst1" selected>Choose</option>
                                                                 <option value="Andaman and Nicobar Islads">Andaman and Nicobar Islads
                                                                 </option>
@@ -1081,7 +1055,7 @@
                                                     <div class="col-md-6 mt-3">
                                                         <div class="form-row">
                                                             <label for="shippinco">Pin Code</label>
-                                                            <input type="text" class="form-control" id="shippinco1"
+                                                            <input type="text" class="form-control" id="shippincode1"
                                                                    name="shippincode"
                                                                    placeholder="PIN code">
                                                             <div class="invalid-feedback">Please provide a valid Pin Code</div>
@@ -1112,7 +1086,7 @@
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
                                                 <button class="btn btn-outline-info rounded-pill text-grey w-100 mt-3 mb-3"
-                                                        type="submit">
+                                                        type="submit" id="customerSave" data-dismiss="modal">
                                                     Submit form
                                                 </button>
                                             </div>
@@ -1124,6 +1098,36 @@
                         </div>
                     </div>  
                 </div>   
+
+
+                <div class="modal fade" id="crperiod">
+                    <div class="modal-dialog">
+                        <div class="modal-content" style="background-color: #213b52;">
+                            <div class="modal-header">
+                                <h5 class="m-3">New Payment Terms</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="card p-3 m-3">
+                                    <form action="{% url 'credit_period1' %}" method="post" autocomplete="off">
+                                        {% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-md-2 mt-2"></div>
+                                            <div class="col-md-5 mt-2">
+                                                <input type="number" name="newperiod" class="form-control">
+                                            </div>
+                                            <div class="col-md-2 mt-2">
+                                                <button class="btn btn-outline-info text-grey mb-3" type="submit">Save</button>
+                                            </div>
+                                        </div>
+                                    </form>  
+                                </div>
+                            </div>
+                        </div>   
+                    </div>
+                </div> 
 
             </div>
         </div>
@@ -1362,25 +1366,15 @@
         $(document).ready(function() {
             $('#vendor').change(function() {
 
-                // var inpBox1 = document.getElementById("gstno");
-                // var inpBox2 = document.getElementById("gsttp");
-                
-                // inpBox1.classList.remove("d-none");
-                // inpBox1.classList.add("d-block");
-
-                // inpBox2.classList.remove("d-none");
-                // inpBox2.classList.add("d-block");
-
-
-                var id = $(this).val();
-                console.log(id);
+                var name = $(this).val();
+                console.log(name);
 
                 $.ajax({
 
                     url: "{% url 'get_GST' %}", 
 
                     data: { 
-                            id: id,
+                            name : name,
                             csrfmiddlewaretoken: '{{ csrf_token }}' 
                         },
 
@@ -1396,6 +1390,143 @@
             
             });
         });
+
+
+$(document).on("click","#vendorSave",function(){
+
+
+console.log($("#title").val())
+        $.ajax({
+                    type : 'POST',
+                    url:"{% url 'recurexpense_vendor' %}",
+                
+                    data:{
+                        
+                        title : $("#title").val(),
+                        firstname : $("#fname").val(),
+                        lastname : $("#lname").val(),
+                        company_name : $("#company").val(),
+                        email : $("#email").val(),
+                        website :$("#wsite").val(),
+                        mobile :$("#mobile").val(),
+                        gsttype :$("#gsttyp").val(),
+                        gstin :$("#gstin").val(),
+                        panno : $("#panno").val(),
+                        sourceofsupply :$("#ssupply").val(),
+                        currency : $("#currency").val(),
+                        openingbalance : $("#openingbalance").val(),
+                        paymentterms : $("#paymentterms").val(),
+                        street : $("#street").val(),
+                        city : $("#city").val(),
+                        state : $("#state").val(),
+                        pincode : $("#pincode").val(),
+                        country : $("#country").val(),
+                        shipstreet : $("#shipstreet").val(),
+                        shipcity : $("#shipcity").val(),
+                        shipstate : $("#plosu").val(),
+                        shippincode : $("#shippincode").val(),
+                        shipcountry : $("#shipcountry").val(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                        
+                    },
+                    
+                    success: function(response) {
+
+                        if(response.message === 'success'){
+                            console.log(response.message);
+                            $("#modalForm").trigger("reset");
+                            // $('#modalForm')[0].reset();
+                        
+                        }
+                        
+                    },
+                    
+                });
+    
+});
+
+
+$(document).on("click","#accountSave",function(){
+
+        $.ajax({
+                    type : 'POST',
+                    url:"{% url 'recurexpense_account' %}",
+                
+                    data:{
+                        
+                        acctype : $("#select1").val(),
+                        name : $("#name").val(),
+                        description : $("#description").val(),
+                        balance : $("#balance").val(),
+                        asof : $("#date1").val(),
+                        dbbalance :$("#dbbalance").val(),
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                        
+                    },
+                    
+                    success: function(response) {
+
+                        if(response.message === 'success'){
+                            console.log(response.message);
+                            $("#modalForm").trigger("reset");
+                            // $('#modalForm')[0].reset();
+                        
+                        }
+                        
+                    },
+                    
+                });
+    
+});
+
+
+$(document).on("click","#customerSave",function(){
+
+$.ajax({
+            type : 'POST',
+            url:"{% url 'recurexpense_customer' %}",
+
+        
+            data:{
+                    title : $("#title1").val(),
+                    firstname : $("#firstname").val(),
+                    lastname : $("#lastname").val(),
+                    company_name : $("#company1").val(),
+                    location : $("#location").val(),
+                    website :$("#web").val(),
+                    mobile :$("#mob").val(),
+                    gsttype :$("#gsttp").val(),
+                    gstin :$("#gst").val(),
+                    panno : $("#pannum").val(),
+                    email :$("#custemail").val(),
+                    openingbalance : $("#openbalance").val(),
+                    street : $("#street1").val(),
+                    city : $("#city1").val(),
+                    state : $("#state1").val(),
+                    pincode : $("#pincode1").val(),
+                    country : $("#country1").val(),
+                    shipstreet : $("#shipstreet1").val(),
+                    shipcity : $("#shipcity1").val(),
+                    shipstate : $("#plosu1").val(),
+                    shippincode : $("#shippincode1").val(),
+                    shipcountry : $("#shipcountry1").val(),
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            
+            success: function(response) {
+
+                if(response.message === 'success'){
+                    console.log(response.message);
+                    $("#modalForm").trigger("reset");
+                    // $('#modalForm')[0].reset();
+                
+                }
+                
+            },
+            
+        });
+
+});
 
     </script>
 

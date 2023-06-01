@@ -866,9 +866,22 @@ path('search_retinvoice',views.search_retinvoice,name='search_retinvoice'),
 
     path('expence_services',views.expence_services,name='expence_services'),
 
-    path('createvendor5',views.createvendor5,name='createvendor5'),
 
-     path('get_GST',views.get_GST,name='get_GST'),
+    path('get_GST',views.get_GST,name='get_GST'),
 
+    path('expence_custasc',views.expence_custasc,name='expence_custasc'),
+
+    path('expence_custdesc',views.expence_custdesc,name='expence_custdesc'),
+
+    path('expence_vendorasc',views.expence_vendorasc,name='expence_vendorasc'),
+
+    path('expence_vendordesc',views.expence_vendordesc,name='expence_vendordesc'),
+
+
+    path('recurexpense_vendor',views.recurexpense_vendor,name='recurexpense_vendor'),
+
+    path('recurexpense_account',views.recurexpense_account,name='recurexpense_account'),
+
+    path('recurexpense_customer',views.recurexpense_customer,name='recurexpense_customer'),
 
 ]
