@@ -46,7 +46,7 @@ class customer(models.Model):
     title= models.CharField(max_length=10)
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
-    company = models.CharField(max_length=100)
+    company = models.CharField(max_length=100,null=True)
     location = models.CharField(max_length=100)
     gsttype = models.CharField(max_length=100, null=True)
     gstin = models.CharField(max_length=100, default='')

@@ -884,4 +884,11 @@ path('search_retinvoice',views.search_retinvoice,name='search_retinvoice'),
 
     path('recurexpense_customer',views.recurexpense_customer,name='recurexpense_customer'),
 
+    path('customer_dropdown',views.customer_dropdown,name = 'customer_dropdown'),
+
+    path('vendor_dropdown',views.vendor_dropdown,name = 'vendor_dropdown'),
+
+    path('account_dropdown',views.account_dropdown,name = 'account_dropdown'),
+
+
 ]

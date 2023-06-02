@@ -313,7 +313,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="card p-3 m-3">
-                                    <form method="post" action="">
+                                    <form method="post" action="" id="modalAccount">
                                         {% csrf_token %}
                                         <div class="row mt-2 mb-2">
                                             <div class="col-md-6">
@@ -391,7 +391,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="card p-3 m-3">
-                                    <form action="" method="post" class="needs-validation" novalidate autocomplete="off" id="modalForm">
+                                    <form action="" method="post" class="needs-validation" novalidate autocomplete="off" id="modalVendor">
                                         {% csrf_token %}
                                         {% if user.is_authenticated %}
                                             <div class="row">
@@ -733,7 +733,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6 mt-3">
                                                             <div class="form-row">
-                                                                <label for="shippinco">Pin Code</label>
+                                                                <label for="shippincode">Pin Code</label>
                                                                 <input type="text" class="form-control" id="shippincode"
                                                                     name="shippincode"
                                                                     placeholder="PIN Code">
@@ -790,7 +790,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="card p-3 m-3">
-                                    <form action="" method="POST">{% csrf_token %}
+                                    <form action="" method="POST" id="modalCustomer">{% csrf_token %}
                                         <div class="row">
                                             <div class="col-md-4 mt-3">
                                                 <label for="title1">Title</label>
@@ -1086,7 +1086,7 @@
                                             <div class="col-md-4"></div>
                                             <div class="col-md-4">
                                                 <button class="btn btn-outline-info rounded-pill text-grey w-100 mt-3 mb-3"
-                                                        type="submit" id="customerSave" data-dismiss="modal">
+                                                        type="submit" id="customerSave" data-dismiss="modal" >
                                                     Submit form
                                                 </button>
                                             </div>
@@ -1135,37 +1135,37 @@
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
+
         function poppins() {
             var chkbtn = document.getElementById('okay');
             if (chkbtn.checked == true) {
                 document.getElementById('shipstreet').value = document.getElementById('street').value;
                 document.getElementById('shipcity').value = document.getElementById('city').value;
-                document.getElementById('shippinco').value = document.getElementById('pinco').value;
+                document.getElementById('shippincode').value = document.getElementById('pincode').value;
                 document.getElementById('shipcountry').value = document.getElementById('country').value;
-                document.getElementById('shipst').value = document.getElementById('state').value;
-                document.getElementById('shipst').innerHTML = document.getElementById('state').value;
+                document.getElementById('plosu').value = document.getElementById('state').value;
             } else {
                 document.getElementById('shipstreet').value = '';
                 document.getElementById('shipcity').value = '';
-                document.getElementById('shipstate').value = '';
-                document.getElementById('shippinco').value = '';
+                document.getElementById('plosu').value = '';
+                document.getElementById('shippincode').value = '';
                 document.getElementById('shipcountry').value = '';
             }
         }
         function poppins1() {
+
             var chkbtn = document.getElementById('okay1');
             if (chkbtn.checked == true) {
                 document.getElementById('shipstreet1').value = document.getElementById('street1').value;
                 document.getElementById('shipcity1').value = document.getElementById('city1').value;
-                document.getElementById('shippinco1').value = document.getElementById('pinco1').value;
+                document.getElementById('shippincode1').value = document.getElementById('pincode1').value;
                 document.getElementById('shipcountry1').value = document.getElementById('country1').value;
-                document.getElementById('shipst1').value = document.getElementById('state1').value;
-                document.getElementById('shipst1').innerHTML = document.getElementById('state1').value;
+                document.getElementById('plosu1').value = document.getElementById('state1').value;
             } else {
                 document.getElementById('shipstreet1').value = '';
                 document.getElementById('shipcity1').value = '';
-                document.getElementById('shipstate1').value = '';
-                document.getElementById('shippinco1').value = '';
+                document.getElementById('plosu1').value = '';
+                document.getElementById('shippincode1').value = '';
                 document.getElementById('shipcountry1').value = '';
             }
         }
@@ -1396,137 +1396,171 @@ $(document).on("click","#vendorSave",function(){
 
 
 console.log($("#title").val())
-        $.ajax({
-                    type : 'POST',
-                    url:"{% url 'recurexpense_vendor' %}",
-                
-                    data:{
-                        
-                        title : $("#title").val(),
-                        firstname : $("#fname").val(),
-                        lastname : $("#lname").val(),
-                        company_name : $("#company").val(),
-                        email : $("#email").val(),
-                        website :$("#wsite").val(),
-                        mobile :$("#mobile").val(),
-                        gsttype :$("#gsttyp").val(),
-                        gstin :$("#gstin").val(),
-                        panno : $("#panno").val(),
-                        sourceofsupply :$("#ssupply").val(),
-                        currency : $("#currency").val(),
-                        openingbalance : $("#openingbalance").val(),
-                        paymentterms : $("#paymentterms").val(),
-                        street : $("#street").val(),
-                        city : $("#city").val(),
-                        state : $("#state").val(),
-                        pincode : $("#pincode").val(),
-                        country : $("#country").val(),
-                        shipstreet : $("#shipstreet").val(),
-                        shipcity : $("#shipcity").val(),
-                        shipstate : $("#plosu").val(),
-                        shippincode : $("#shippincode").val(),
-                        shipcountry : $("#shipcountry").val(),
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                        
-                    },
-                    
-                    success: function(response) {
+    $.ajax({
 
-                        if(response.message === 'success'){
-                            console.log(response.message);
-                            $("#modalForm").trigger("reset");
-                            // $('#modalForm')[0].reset();
-                        
-                        }
-                        
-                    },
-                    
-                });
+
+        type : 'POST',
+        url:"{% url 'recurexpense_vendor' %}",
     
+        data:{
+            
+            title : $("#title").val(),
+            firstname : $("#fname").val(),
+            lastname : $("#lname").val(),
+            company_name : $("#company").val(),
+            email : $("#email").val(),
+            website :$("#wsite").val(),
+            mobile :$("#mobile").val(),
+            gsttype :$("#gsttyp").val(),
+            gstin :$("#gstin").val(),
+            panno : $("#panno").val(),
+            sourceofsupply :$("#ssupply").val(),
+            currency : $("#currency").val(),
+            openingbalance : $("#openingbalance").val(),
+            paymentterms : $("#paymentterms").val(),
+            street : $("#street").val(),
+            city : $("#city").val(),
+            state : $("#state").val(),
+            pincode : $("#pincode").val(),
+            country : $("#country").val(),
+            shipstreet : $("#shipstreet").val(),
+            shipcity : $("#shipcity").val(),
+            shipstate : $("#plosu").val(),
+            shippincode : $("#shippincode").val(),
+            shipcountry : $("#shipcountry").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+            
+        },
+        
+        success: function(response) {
+            document.getElementById("modalVendor").reset();
+        },
+                
+    });
+
+    reloadDropdown();
+
 });
 
 
 $(document).on("click","#accountSave",function(){
 
-        $.ajax({
-                    type : 'POST',
-                    url:"{% url 'recurexpense_account' %}",
-                
-                    data:{
-                        
-                        acctype : $("#select1").val(),
-                        name : $("#name").val(),
-                        description : $("#description").val(),
-                        balance : $("#balance").val(),
-                        asof : $("#date1").val(),
-                        dbbalance :$("#dbbalance").val(),
-                        csrfmiddlewaretoken: '{{ csrf_token }}'
-                        
-                    },
-                    
-                    success: function(response) {
+    $.ajax({
 
-                        if(response.message === 'success'){
-                            console.log(response.message);
-                            $("#modalForm").trigger("reset");
-                            // $('#modalForm')[0].reset();
-                        
-                        }
-                        
-                    },
-                    
-                });
+        type : 'POST',
+        url:"{% url 'recurexpense_account' %}",
+    
+        data:{
+            
+            acctype : $("#select1").val(),
+            name : $("#name").val(),
+            description : $("#description").val(),
+            balance : $("#balance").val(),
+            asof : $("#date1").val(),
+            dbbalance :$("#dbbalance").val(),
+            csrfmiddlewaretoken: '{{ csrf_token }}'
+            
+        },
+        
+        success: function(response) {
+            document.getElementById("modalAccount").reset();
+                                    
+        },
+                
+    });
+
+    reloadDropdown();
+
     
 });
 
 
 $(document).on("click","#customerSave",function(){
 
-$.ajax({
-            type : 'POST',
-            url:"{% url 'recurexpense_customer' %}",
+    $.ajax({
+        type : 'POST',
+        url:"{% url 'recurexpense_customer' %}",
+        data:{
+                title : $("#title1").val(),
+                firstname : $("#firstname").val(),
+                lastname : $("#lastname").val(),
+                company : $("#company1").val(),
+                location : $("#location").val(),
+                website :$("#web").val(),
+                mobile :$("#mob").val(),
+                gsttype :$("#gsttp").val(),
+                gstin :$("#gst").val(),
+                panno : $("#pannum").val(),
+                email :$("#custemail").val(),
+                openingbalance : $("#openbalance").val(),
+                street : $("#street1").val(),
+                city : $("#city1").val(),
+                state : $("#state1").val(),
+                pincode : $("#pincode1").val(),
+                country : $("#country1").val(),
+                shipstreet : $("#shipstreet1").val(),
+                shipcity : $("#shipcity1").val(),
+                shipstate : $("#plosu1").val(),
+                shippincode : $("#shippincode1").val(),
+                shipcountry : $("#shipcountry1").val(),
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function(response) {
+            document.getElementById("modalCustomer").reset();
+        },
+    });
 
-        
-            data:{
-                    title : $("#title1").val(),
-                    firstname : $("#firstname").val(),
-                    lastname : $("#lastname").val(),
-                    company_name : $("#company1").val(),
-                    location : $("#location").val(),
-                    website :$("#web").val(),
-                    mobile :$("#mob").val(),
-                    gsttype :$("#gsttp").val(),
-                    gstin :$("#gst").val(),
-                    panno : $("#pannum").val(),
-                    email :$("#custemail").val(),
-                    openingbalance : $("#openbalance").val(),
-                    street : $("#street1").val(),
-                    city : $("#city1").val(),
-                    state : $("#state1").val(),
-                    pincode : $("#pincode1").val(),
-                    country : $("#country1").val(),
-                    shipstreet : $("#shipstreet1").val(),
-                    shipcity : $("#shipcity1").val(),
-                    shipstate : $("#plosu1").val(),
-                    shippincode : $("#shippincode1").val(),
-                    shipcountry : $("#shipcountry1").val(),
-                    csrfmiddlewaretoken: '{{ csrf_token }}'
-            },
-            
-            success: function(response) {
-
-                if(response.message === 'success'){
-                    console.log(response.message);
-                    $("#modalForm").trigger("reset");
-                    // $('#modalForm')[0].reset();
-                
-                }
-                
-            },
-            
-        });
+    reloadDropdown();
 
 });
+function reloadDropdown() {
+
+    $.ajax({
+        url: "{% url 'customer_dropdown' %}",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+        var dropdown = $('#select');
+        dropdown.empty();
+        $.each(data, function(key, value) {
+            dropdown.append($('<option></option>').attr('value', key).text(value));
+        });
+        },
+        error: function(xhr, status, error) {
+        console.error(xhr.responseText);
+        }
+    });
+    $.ajax({
+        url: "{% url 'vendor_dropdown' %}",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+        var dropdown = $('#vendor');
+        dropdown.empty();
+        $.each(data, function(key, value) {
+            dropdown.append($('<option></option>').attr('value', key).text(value));
+        });
+        },
+        error: function(xhr, status, error) {
+        console.error(xhr.responseText);
+        }
+    });
+    $.ajax({
+        url: "{% url 'account_dropdown' %}",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+        var dropdown = $('#exp_acc');
+        dropdown.empty();
+        $.each(data, function(key, value) {
+            dropdown.append($('<option></option>').attr('value', key).text(value));
+        });
+        },
+        error: function(xhr, status, error) {
+        console.error(xhr.responseText);
+        }
+    });
+}
 
     </script>
 
