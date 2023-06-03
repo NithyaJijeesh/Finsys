@@ -38267,8 +38267,9 @@ def account_dropdown(request):
             return redirect('/')
         comp = company.objects.get(id=request.session["uid"])
         options = {}
-        option_objects = customer.objects.filter(cid = comp)
+        option_objects = accounts1.objects.filter(cid = comp)
         for option in option_objects:
+            print(option.name)
             options[option.accounts1id] = option.name
 
         return JsonResponse(options)
