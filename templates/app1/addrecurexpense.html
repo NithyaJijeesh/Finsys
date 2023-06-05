@@ -67,7 +67,7 @@
                         <div class="col-md-4 mt-3">
                             <label for="" style="color: rgb(190, 88, 88);">Expense Account *</label>
                             <div class="d-flex">
-                                <select name="exp_acc" id="exp_acc" class="form-control" onclick="reloadExpense()">
+                                <select name="exp_acc" id="exp_acc" class="form-control" >
                                     <option selected disabled>Expenses</option>
                                     {% for a in acc %}
                                         <option value="{{a.name}}">{{a.name}}</option>
@@ -181,7 +181,7 @@
                         <div class="col-md-4 mt-4">
                             <label for="">Vendor</label>
                             <div class="d-flex">
-                                <select name="vendor" id="vendor" class="form-control" onclick="reloadVendor()">
+                                <select name="vendor" id="vendor" class="form-control" >
                                     <option value=""></option>
                                     {% for v in vndr %}
                                     <option value="{{ v.firstname }} {{ v.lastname }}">{{ v.firstname }} {{ v.lastname }}</option>
@@ -231,7 +231,7 @@
                         <div class="col-md-4 mt-4">
                             <label for="">Customer Name</label>
                             <div class="d-flex">
-                                <select name="customer" id="select" class="form-control" onclick="reloadCustomer()">
+                                <select name="customer" id="select" class="form-control">
                                     <option></option>
                                     {% for c in cust %}
                                     <option value="{{ c.firstname }} {{ c.lastname }}">{{ c.firstname }} {{ c.lastname }}</option>
@@ -1363,39 +1363,9 @@
         }
 
 
-        $(document).ready(function() {
-            $('#vendor').change(function() {
-
-                var name = $(this).val();
-                console.log(name);
-
-                $.ajax({
-
-                    url: "{% url 'get_GST' %}", 
-
-                    data: { 
-                            name : name,
-                            csrfmiddlewaretoken: '{{ csrf_token }}' 
-                        },
-
-                    type : 'POST',
-
-                    success: function(data) {
-                        console.log(data)
-                        $('#gstnum').val(data.data1);
-                        $('#gsttype').val(data.data2);
-
-                    }
-                });
-            
-            });
-        });
-
-
 $(document).on("click","#vendorSave",function(){
 
 
-console.log($("#title").val())
     $.ajax({
 
 
@@ -1434,10 +1404,12 @@ console.log($("#title").val())
         
         success: function(response) {
             document.getElementById("modalVendor").reset();
+            reloadVendor();
         },
                 
     });
 
+    
     
 });
 
@@ -1463,7 +1435,7 @@ $(document).on("click","#accountSave",function(){
         
         success: function(response) {
             document.getElementById("modalAccount").reset();
-                                    
+            reloadExpense();
         },
                 
     });
@@ -1504,6 +1476,7 @@ $(document).on("click","#customerSave",function(){
         },
         success: function(response) {
             document.getElementById("modalCustomer").reset();
+            reloadCustomer();
         },
     });
 
@@ -1516,17 +1489,24 @@ function reloadExpense() {
         url: "{% url 'account_dropdown' %}",
         type: "GET",
         dataType: "json",
+        data: $(this).serialize(),
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+
         success: function(data) {
-        var dropdown = $('#exp_acc');
-        dropdown.empty();
-        $.each(data, function(key, value) {
-            dropdown.append($('<option></option>').attr('value', key).text(value));
-        });
+            var dropdown = $('#exp_acc');
+
+            dropdown.empty();
+            $.each(data, function(key, value) {
+                dropdown.append($('<option></option>').attr('value', key).text(value));
+            });
         },
 
     });
+
+    
  
 }
+
 
 function reloadCustomer() {
 
@@ -1534,16 +1514,21 @@ function reloadCustomer() {
         url: "{% url 'customer_dropdown' %}",
         type: "GET",
         dataType: "json",
+        data: $(this).serialize(),
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+
         success: function(data) {
-        var dropdown = $('#select');
-        dropdown.empty();
-        $.each(data, function(key, value) {
-            dropdown.append($('<option></option>').attr('value', key).text(value));
-        });
+            var dropdown = $('#select');
+
+            dropdown.empty();
+            $.each(data, function(key, value) {
+                dropdown.append($('<option></option>').attr('value', key).text(value));
+            });
         },
         error: function(xhr, status, error) {
         console.error(xhr.responseText);
         }
+
     });
  
 }
@@ -1555,20 +1540,53 @@ function reloadVendor() {
         url: "{% url 'vendor_dropdown' %}",
         type: "GET",
         dataType: "json",
+        data: $(this).serialize(),
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+
         success: function(data) {
-        var dropdown = $('#vendor');
-        dropdown.empty();
-        $.each(data, function(key, value) {
-            dropdown.append($('<option></option>').attr('value', key).text(value));
-        });
+            var dropdown = $('#vendor');
+            dropdown.empty();
+            $.each(data, function(key, value) {
+                // console.log(value)
+                dropdown.append($('<option></option>').attr('value', key).text(value).val(value));
+            });
         },
         error: function(xhr, status, error) {
         console.error(xhr.responseText);
         }
     });
 
-
 }
+
+$(document).ready(function() {
+    $('#vendor').change(function() {
+
+        var name = $("#vendor").val();
+        var na = name.split(' ')
+        // console.log(name)
+        $.ajax({
+
+            url: "{% url 'get_GST' %}", 
+
+            data: { 
+                    fname : na[0],
+                    lname : na[1],
+                    csrfmiddlewaretoken: '{{ csrf_token }}' 
+                },
+
+            type : 'POST',
+
+            success: function(data) {
+                console.log(data)
+                $('#gstnum').val(data.data1);
+                $('#gsttype').val(data.data2);
+
+            }
+        });
+    
+    });
+});
+
 
     </script>
 

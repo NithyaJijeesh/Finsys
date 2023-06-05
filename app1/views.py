@@ -38083,8 +38083,10 @@ def get_GST(request):
 
         cmp1 = company.objects.get(id=request.session['uid'])
 
-        name = request.POST.get('name').split()
-        vdr = vendor.objects.get(cid=cmp1,firstname = name[0],lastname = name[1])
+        fname = request.POST.get('fname')
+        lname = request.POST.get('lname')
+        print(lname)
+        vdr = vendor.objects.get(cid=cmp1,firstname = fname,lastname = lname)
         data1 = vdr.gstin
         data2 = vdr.gsttype
     
